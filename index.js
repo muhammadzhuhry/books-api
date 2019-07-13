@@ -66,6 +66,43 @@ app.get('/publisher', (req, res) => {
     });
 });
 
+app.put('/publisher/:id', (req, res) => {
+  let payload = {
+    publisher_id: req.params.id
+  }
+
+  Publisher.findOneAndUpdate(payload, req.body, (err, value) => {
+    if (err) {
+      return res.status(500).send({'error':'An error has occurred'});
+    }
+
+    res.send({
+      'code': 202,
+      'success': 'true',
+      'message': 'Publisher has been updated',
+      'data': value
+    });
+  });
+});
+
+app.del('/publisher/:id', (req, res) => {
+  let payload = {
+    publisher_id: req.params.id
+  }
+
+  Publisher.findOneAndRemove(payload, (err, value) => {
+    if (err) {
+      return res.status(500).send({'error':'An error has occurred'});
+    }
+
+    res.send({
+      'code': 204,
+      'success': 'true',
+      'message': `Publisher ${value.publisher_name} has been deleted`
+    });
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server started at port ${port} on ${time}`);
 });
