@@ -9,7 +9,7 @@ const authorController = {
   getHandler : (req, res) => {
     Author.find((err, value) => {
       if (err) {
-        return res.status(500).send({'error':'An error has occurred'});
+        return response.wrapper_error(res, httpError.INTERNAL_ERROR, 'An error has occurred');
       }
 
       if (value.length > 0) {
@@ -29,7 +29,7 @@ const authorController = {
 
     Author.create(payload, (err, value) => {
       if (err) {
-        return res.status(500).send({'error':'An error has occurred'});
+        return response.wrapper_error(res, httpError.INTERNAL_ERROR, 'An error has occurred');
       }
 
       response.wrapper_success(res, 201, 'Author has been inserted', value);
@@ -43,7 +43,7 @@ const authorController = {
 
     Author.findOneAndUpdate(payload, req.body, (err, value) => {
       if (err) {
-        return res.status(500).send({'error':'An error has occurred'});
+        return response.wrapper_error(res, httpError.INTERNAL_ERROR, 'An error has occurred');
       }
       
       if (value != null) {
@@ -62,7 +62,7 @@ const authorController = {
 
     Author.findOneAndRemove(payload, (err, value) => {
       if (err) {
-        return res.status(500).send({'error':'An error has occurred'});
+        return response.wrapper_error(res, httpError.INTERNAL_ERROR, 'An error has occurred');
       }
 
       if (value != null) {

@@ -9,7 +9,7 @@ const publisherController = {
   getHandler : (req, res) => {
     Publisher.find((err,  value) => {
       if (err) {
-        return res.status(500).send({'error':'An error has occurred'});
+        return response.wrapper_error(res, httpError.INTERNAL_ERROR, 'An error has occurred');
       }
 
       if (value.length > 0) {
@@ -30,7 +30,7 @@ const publisherController = {
 
     Publisher.create(payload, (err, value) => {
       if (err) {
-        return res.status(500).send({'error':'An error has occurred'});
+        return response.wrapper_error(res, httpError.INTERNAL_ERROR, 'An error has occurred');
       }
 
       response.wrapper_success(res, 201, 'Publisher has been inserted', value);
@@ -63,7 +63,7 @@ const publisherController = {
 
     Publisher.findOneAndRemove(payload, (err, value) => {
       if (err) {
-        return res.status(500).send({'error':'An error has occurred'});
+        return response.wrapper_error(res, httpError.INTERNAL_ERROR, 'An error has occurred');
       }
 
       if (value != null) {
