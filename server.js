@@ -2,6 +2,7 @@ const restify = require('restify');
 const project = require('./package.json');
 const authorController = require('./controllers/author.controller');
 const publisherController = require('./controllers/publisher.controller');
+const bookController = require('./controllers/book.controller');
 
 function AppServer() {
   // create server
@@ -29,6 +30,12 @@ function AppServer() {
   this.server.post('/publisher', publisherController.postHandler);
   this.server.put('/publisher/:id', publisherController.putHandler);
   this.server.del('/publisher/:id', publisherController.deleteHandler);
+
+  // book route
+  this.server.get('/book', bookController.getHandler);
+  this.server.post('/book', bookController.postHandler);
+  this.server.put('/book/:id', bookController.putHandler);
+  this.server.del('/book/:id', bookController.deleteHandler);
 }
 
 module.exports = AppServer;
