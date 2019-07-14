@@ -6,7 +6,7 @@ const Publisher = mongoose.model('publisher');
 const publisherController = {
   getHandler : (req, res) => {
     Publisher.find({}, (err,  value) => {
-      if(err) {
+      if (err) {
         return res.status(500).send({'error':'An error has occurred'});
       }
 
@@ -36,6 +36,43 @@ const publisherController = {
         'success': 'true',
         'message': 'Publisher has been inserted',
         'data': value
+      });
+    });
+  },
+
+  putHandler : (req, res) => {
+    let payload = {
+      publisher_id: req.params.id
+    }
+
+    Publisher.findOneAndUpdate(payload, req.body, (err, value) => {
+      if (err) {
+        return res.status(500).send({'error':'An error has occurred'});
+      }
+  
+      res.send({
+        'code': 202,
+        'success': 'true',
+        'message': 'Publisher has been updated',
+        'data': value
+      });
+    });
+  },
+
+  deleteHandler : (req, res) => {
+    let payload = {
+      publisher_id: req.params.id
+    }
+
+    Publisher.findOneAndRemove(payload, (err, value) => {
+      if (err) {
+        return res.status(500).send({'error':'An error has occurred'});
+      }
+      
+      res.send({
+        'code': 204,
+        'success': 'true',
+        'message': `Publisher ${value.publisher_name} has been deleted`
       });
     });
   }
