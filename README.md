@@ -15,3 +15,15 @@ update :
 - penambahan server.js
 - penambahan controllers
 - penambahan cycle crud author
+
+# books-apiv3
+
+update :
+- aggregate dan error handling
+- add helper for wrapper(success, error)
+- add helper http error code
+- folder: config, controllers, helper, models
+- penambahan endpoint di server.js
+- penambahan model book
+- penambahan controllers book
+- penambahan cycle crud book
