@@ -5,7 +5,7 @@ const Publisher = mongoose.model('publisher');
 
 const publisherController = {
   getHandler : (req, res) => {
-    Publisher.find({}, (err,  value) => {
+    Publisher.find((err,  value) => {
       if (err) {
         return res.status(500).send({'error':'An error has occurred'});
       }
