@@ -20,6 +20,8 @@ function AppServer() {
   // publisher route
   this.server.get('/publisher', publisherController.getHandler);
   this.server.post('/publisher', publisherController.postHandler);
+  this.server.put('/publisher/:id', publisherController.putHandler);
+  this.server.del('/publisher/:id', publisherController.deleteHandler);
 }
 
 module.exports = AppServer;
