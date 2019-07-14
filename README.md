@@ -1,7 +1,7 @@
 # books-apiv1
 
-create simple crud cycle :
-
-folder: models
-
-crud publisher
+update :
+- pembuatan crud cycle publisher
+- folder: models
+- penambahan folder models
+- pembuatan simple server di index.js
