@@ -2,6 +2,8 @@ const uuidv4 = require('uuid/v4');
 const mongoose = require('mongoose');
 const model = require('../models/publisher.model');
 const Publisher = mongoose.model('publisher');
+const response = require('../helper/wrapper');
+const { ERROR: httpError } = require('../helper/httpError');
 
 const publisherController = {
   getHandler : (req, res) => {
@@ -10,12 +12,12 @@ const publisherController = {
         return res.status(500).send({'error':'An error has occurred'});
       }
 
-      res.send({
-        'code': 200,
-        'success': 'true',
-        'message': 'Request has been proceseed',
-        'data': value
-      });
+      if (value.length > 0) {
+        response.wrapper_success(res, 200, 'Request has been proceseed', value);
+      } else {
+        response.wrapper_error(res, httpError.NOT_FOUND, 'Data publisher is not found');
+      }
+
     });
   },
 
@@ -30,13 +32,8 @@ const publisherController = {
       if (err) {
         return res.status(500).send({'error':'An error has occurred'});
       }
-  
-      res.send({
-        'code': 201,
-        'success': 'true',
-        'message': 'Publisher has been inserted',
-        'data': value
-      });
+
+      response.wrapper_success(res, 201, 'Publisher has been inserted', value);
     });
   },
 
@@ -49,13 +46,13 @@ const publisherController = {
       if (err) {
         return res.status(500).send({'error':'An error has occurred'});
       }
-  
-      res.send({
-        'code': 202,
-        'success': 'true',
-        'message': 'Publisher has been updated',
-        'data': value
-      });
+
+      if (value != null) {
+        response.wrapper_success(res, 202, 'Publisher has been updated', value);
+      } else {
+        response.wrapper_error(res, httpError.INTERNAL_ERROR, 'Failed to update publisher');
+      }
+
     });
   },
 
@@ -68,12 +65,16 @@ const publisherController = {
       if (err) {
         return res.status(500).send({'error':'An error has occurred'});
       }
-      
-      res.send({
-        'code': 204,
-        'success': 'true',
-        'message': `Publisher ${value.publisher_name} has been deleted`
-      });
+
+      if (value != null) {
+        res.send({
+          'code': 204,
+          'success': 'true',
+          'message': `Publisher ${value.publisher_name} has been deleted`
+        });
+      } else {
+        response.wrapper_error(res, httpError.INTERNAL_ERROR, 'Failed to delete publisher');
+      }
     });
   }
 }

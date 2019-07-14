@@ -2,6 +2,8 @@ const uuidv4 = require('uuid/v4');
 const mongoose = require('mongoose');
 const model = require('../models/author.model');
 const Author = mongoose.model('author');
+const response = require('../helper/wrapper');
+const { ERROR: httpError } = require('../helper/httpError');
 
 const authorController = {
   getHandler : (req, res) => {
@@ -10,12 +12,12 @@ const authorController = {
         return res.status(500).send({'error':'An error has occurred'});
       }
 
-      res.send({
-        'code': 200,
-        'success': 'true',
-        'message': 'Request has been proceseed',
-        'data': value
-      });
+      if (value.length > 0) {
+        response.wrapper_success(res, 200, 'Request has been proceseed', value);
+      } else {
+        response.wrapper_error(res, httpError.NOT_FOUND, 'Data author is not found');
+      }
+
     });
   },
 
@@ -30,13 +32,8 @@ const authorController = {
         return res.status(500).send({'error':'An error has occurred'});
       }
 
-      res.send({
-        'code': 201,
-        'success': 'true',
-        'message': 'Author has been inserted',
-        'data': value
-      });
-    })
+      response.wrapper_success(res, 201, 'Author has been inserted', value);
+    });
   },
 
   putHandler : (req, res) => {
@@ -48,13 +45,13 @@ const authorController = {
       if (err) {
         return res.status(500).send({'error':'An error has occurred'});
       }
-  
-      res.send({
-        'code': 202,
-        'success': 'true',
-        'message': 'Author has been updated',
-        'data': value
-      });
+      
+      if (value != null) {
+        response.wrapper_success(res, 202, 'Author has been updated', value);
+      } else {
+        response.wrapper_error(res, httpError.INTERNAL_ERROR, 'Failed to update author');
+      }
+
     });
   },
 
@@ -67,12 +64,17 @@ const authorController = {
       if (err) {
         return res.status(500).send({'error':'An error has occurred'});
       }
-      
-      res.send({
-        'code': 204,
-        'success': 'true',
-        'message': `Author ${value.author_name} has been deleted`
-      });
+
+      if (value != null) {
+        res.send({
+          'code': 204,
+          'success': 'true',
+          'message': `Author ${value.author_name} has been deleted`
+        });
+      } else {
+        response.wrapper_error(res, httpError.INTERNAL_ERROR, 'Failed to delete author');
+      }
+
     });
   }
 }
